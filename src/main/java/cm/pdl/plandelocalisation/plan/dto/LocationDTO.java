@@ -17,4 +17,12 @@ public class LocationDTO {
     String zoom;
     String mapType;
     MarkerDTO marker;
+
+    public String getMapUrl() {
+        return "&center=" + center.getLatitude() + "," + center.getLongitude() +
+                "&size=" + size.getHeight() + "x" + size.getWidth() +
+                "&zoom=" + zoom +
+                "&maptype=" + mapType +
+                "&markers=icon:" + marker.getIconUrl() + "|"+ center.getLatitude()+","+ center.getLongitude();
+    }
 }

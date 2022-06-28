@@ -1,9 +1,11 @@
 package cm.pdl.plandelocalisation.plan.service;
 
+import cm.pdl.plandelocalisation.plan.dto.LocationDTO;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -18,22 +20,30 @@ import java.io.IOException;
 @Slf4j
 public class PlanGeneratorService {
 
-    public void export(HttpServletResponse response) throws IOException, DocumentException {
+    private static final String TITLE = "PLAN DE LOCALISATION";
+    private static final String SUBTITLE = "Détails de votre localisation";
+
+    @Value("${gmaps.key}")
+    private String key;
+
+    @Value("${gmaps.url}")
+    private String baseUrl;
+
+    public void export(LocationDTO location, HttpServletResponse response) throws IOException, DocumentException {
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
 
         document.open();
-        Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
-        fontTitle.setSize(18);
 
-        Paragraph paragraph = new Paragraph("This is a title.", fontTitle);
-        paragraph.setAlignment(Paragraph.ALIGN_CENTER);
+        Paragraph paragraph = generateParagraph(
+                FontFactory.HELVETICA_BOLDOBLIQUE,
+                36,
+                TITLE);
 
-        Font fontParagraph = FontFactory.getFont(FontFactory.HELVETICA);
-        fontParagraph.setSize(12);
-
-        Paragraph paragraph2 = new Paragraph("This is a paragraph.", fontParagraph);
-        paragraph2.setAlignment(Paragraph.ALIGN_LEFT);
+        Paragraph paragraph2 = generateParagraph(
+                FontFactory.HELVETICA_OBLIQUE,
+                26,
+                SUBTITLE);
 
         // Creating an Image object
         Image image = Image.getInstance("https://maps.googleapis.com/maps/api/staticmap?" +
@@ -50,6 +60,16 @@ public class PlanGeneratorService {
         document.add(paragraph2);
         document.add(image);
         document.close();
+    }
+
+    private Paragraph generateParagraph(String fontName, int fontSize, String text) {
+        Font fontTitle = FontFactory.getFont(fontName);
+        fontTitle.setSize(fontSize);
+        return new Paragraph(text, fontTitle);
+    }
+
+    private String url(LocationDTO location){
+
     }
 
 }
