@@ -12,9 +12,6 @@ import lombok.Setter;
 @Setter
 @RequiredArgsConstructor
 public class LocationDTO {
-    PositionDTO center;
-    ImageSizeDTO size;
-    String zoom;
-    String mapType;
-    MarkerDTO marker;
+    String longitude;
+    String latitude;
 }
