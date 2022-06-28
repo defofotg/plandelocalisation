@@ -12,17 +12,6 @@ import lombok.Setter;
 @Setter
 @RequiredArgsConstructor
 public class LocationDTO {
-    PositionDTO center;
-    ImageSizeDTO size;
-    String zoom;
-    String mapType;
-    MarkerDTO marker;
-
-    public String getMapUrl() {
-        return "&center=" + center.getLatitude() + "," + center.getLongitude() +
-                "&size=" + size.getHeight() + "x" + size.getWidth() +
-                "&zoom=" + zoom +
-                "&maptype=" + mapType +
-                "&markers=icon:" + marker.getIconUrl() + "|"+ center.getLatitude()+","+ center.getLongitude();
-    }
+    String longitude;
+    String latitude;
 }

@@ -1,0 +1,12 @@
+map:
+  key: ${GMAPS_STATIC_API_KEY}
+  url: "https://maps.googleapis.com/maps/api/staticmap"
+  zoom: 18
+  mapType: roadMap
+  marker: "https://map.what3words.com/map/marker.png"
+  size:
+    height: 500
+    width: 500
+
+  details:
+    url: "https://nominatim.openstreetmap.org"
