@@ -10,3 +10,7 @@ map:
 
   details:
     url: "https://nominatim.openstreetmap.org"
+
+springdoc:
+  swagger-ui:
+    path: /
