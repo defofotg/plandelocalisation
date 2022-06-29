@@ -2,7 +2,6 @@ package cm.pdl.plandelocalisation.plan;
 
 import cm.pdl.plandelocalisation.plan.dto.LocationDTO;
 import cm.pdl.plandelocalisation.plan.dto.PlaceDTO;
-import com.lowagie.text.DocumentException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -13,7 +12,7 @@ import java.io.IOException;
  */
 public interface PlanInterface {
 
-    void export(LocationDTO location, HttpServletResponse response) throws IOException, DocumentException;
+    void export(LocationDTO location, HttpServletResponse response) throws IOException;
 
     PlaceDTO retrieveLocationDetails(LocationDTO locationDTO);
 

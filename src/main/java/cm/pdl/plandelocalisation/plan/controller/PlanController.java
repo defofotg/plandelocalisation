@@ -2,18 +2,16 @@ package cm.pdl.plandelocalisation.plan.controller;
 
 import cm.pdl.plandelocalisation.plan.dto.LocationDTO;
 import cm.pdl.plandelocalisation.plan.service.PlanGeneratorService;
-import com.lowagie.text.DocumentException;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * @author Georges DEFO
@@ -22,19 +20,14 @@ import java.util.Date;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class PlanController {
 
     private final PlanGeneratorService planGeneratorService;
 
-    @PostMapping("/plan/download")
-    void downloadPlanPDF(@RequestBody LocationDTO locationDTO, HttpServletResponse response) throws DocumentException, IOException {
+    @GetMapping("/plan/download")
+    void downloadPlanPDF(@RequestParam @NonNull String latitude, @RequestParam @NonNull String longitude, HttpServletResponse response) throws IOException {
         response.setContentType("application/pdf");
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
-        String currentDateTime = dateFormatter.format(new Date());
-
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=pdf_" + currentDateTime + ".pdf";
-        response.setHeader(headerKey, headerValue);
-        this.planGeneratorService.export(locationDTO, response);
+        this.planGeneratorService.export(new LocationDTO(latitude, longitude), response);
     }
 }

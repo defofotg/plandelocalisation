@@ -18,5 +18,5 @@ public class PlaceDTO implements Serializable {
     private String lat;
     private String lon;
     private String display_name;
-    private AddressDTO addressDTO;
+    private AddressDTO address;
 }

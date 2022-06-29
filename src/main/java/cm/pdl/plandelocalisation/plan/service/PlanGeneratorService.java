@@ -4,18 +4,23 @@ import cm.pdl.plandelocalisation.config.MapConfigProperties;
 import cm.pdl.plandelocalisation.plan.PlanInterface;
 import cm.pdl.plandelocalisation.plan.dto.LocationDTO;
 import cm.pdl.plandelocalisation.plan.dto.PlaceDTO;
-import com.lowagie.text.Font;
-import com.lowagie.text.Image;
-import com.lowagie.text.*;
-import com.lowagie.text.pdf.PdfWriter;
+import com.itextpdf.html2pdf.ConverterProperties;
+import com.itextpdf.html2pdf.HtmlConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Base64;
+import java.util.Date;
 
 /**
  * @author Georges DEFO
@@ -26,67 +31,38 @@ import java.io.IOException;
 @Slf4j
 public class PlanGeneratorService implements PlanInterface {
 
-    private static final String TITLE = "PLAN DE LOCALISATION";
-    private static final String SUBTITLE = "Détails de votre localisation";
-    private static final String URL_KEY_PART = "?key=";
+    private static final String TEMPLATE = "plan.html";
 
     private final MapConfigProperties mapConfigProperties;
 
     private final WebClient webClient;
 
-    public void export(LocationDTO location, HttpServletResponse response) throws IOException, DocumentException {
+    private final WebClient webClientGmaps;
 
-        Document document = new Document(PageSize.A4);
+    private final TemplateEngine templateEngine;
 
-        PdfWriter.getInstance(document, response.getOutputStream());
+    public void export(LocationDTO location, HttpServletResponse response) throws IOException {
 
-        document.open();
+        Context ctx = new Context();
 
-        Paragraph paragraph = generateParagraph(
-                FontFactory.HELVETICA_BOLDOBLIQUE,
-                36,
-                TITLE);
-
-        Paragraph paragraph2 = generateParagraph(
-                FontFactory.HELVETICA_OBLIQUE,
-                26,
-                SUBTITLE);
-
-        // Creating an Image object
-        String imageUrl = getStaticMapImageUrl(location);
-
-        if (imageUrl == null) {
-            throw new IllegalArgumentException("The image URL is null, the map cannot be generated.");
-        }
-
-        Image image = Image.getInstance(imageUrl);
-        image.setAlignment(Image.MIDDLE);
-        image.setBorder(Image.BOX);
-        image.setBorderColor(Color.LIGHT_GRAY);
-        image.setBorderWidth(1f);
-
-        // Adding image to the document
-        document.add(paragraph);
-        document.add(paragraph2);
-
-        addSpace(document, 1);
         PlaceDTO place = retrieveLocationDetails(location);
-        if (place == null) {
-            log.debug(String.format("Impossible de récupérer les détails sur la location lat: [%s] - long: [%s]",
-                    location.getLatitude(),
-                    location.getLongitude()));
-        } else {
-            Paragraph paragraph3 = generateParagraph(
-                    FontFactory.HELVETICA_BOLD,
-                    14,
-                    place.getDisplay_name());
-            paragraph3.setAlignment(Element.ALIGN_CENTER);
-            document.add(paragraph3);
-        }
+        String mapImage = getStaticMapImage(location);
 
-        addSpace(document, 2);
-        document.add(image);
-        document.close();
+        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        ctx.setVariable("location", location);
+        ctx.setVariable("place", place);
+        ctx.setVariable("mapImage", mapImage);
+        ctx.setVariable("creationDate", currentDateTime);
+
+        String htmlContent = templateEngine.process(TEMPLATE, ctx);
+
+        /*Setup converter properties. */
+        ConverterProperties converterProperties = new ConverterProperties();
+        converterProperties.setBaseUri(ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString());
+
+        HtmlConverter.convertToPdf(htmlContent, response.getOutputStream(), converterProperties);
     }
 
     @Override
@@ -104,32 +80,34 @@ public class PlanGeneratorService implements PlanInterface {
                 .block();
     }
 
-    private Paragraph generateParagraph(String fontName, int fontSize, String text) {
-        Font fontTitle = FontFactory.getFont(fontName);
-        fontTitle.setSize(fontSize);
-        return new Paragraph(text, fontTitle);
-    }
-
-    private void addSpace(Document doc, int nbSpaces) throws DocumentException {
-        for (int i = 0; i < nbSpaces; i++) {
-            doc.add(Chunk.NEWLINE);
-        }
-    }
-
-    private String getStaticMapImageUrl(LocationDTO location) {
+    private String getStaticMapImage(LocationDTO location) {
         if (location == null) {
             log.debug("Location object is null. Map url cannot be generated.");
             return null;
         }
 
-        return mapConfigProperties.getUrl() +
-                URL_KEY_PART +
-                mapConfigProperties.getKey() +
-                "&center=" + location.getLatitude() + "," + location.getLongitude() +
-                "&size=" + mapConfigProperties.getSize().getHeight() + "x" + mapConfigProperties.getSize().getWidth() +
-                "&zoom=" + mapConfigProperties.getZoom() +
-                "&maptype=" + mapConfigProperties.getMapType() +
-                "&markers=icon:" + mapConfigProperties.getMarker() + "|" + location.getLatitude() + "," + location.getLongitude();
+        byte[] image = webClientGmaps
+                .get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/maps/api/staticmap")
+                        .queryParam("key", mapConfigProperties.getKey())
+                        .queryParam("center", location.getLatitude() + "," + location.getLongitude())
+                        .queryParam("size", mapConfigProperties.getSize().getWidth() + "x" + mapConfigProperties.getSize().getHeight())
+                        .queryParam("zoom", mapConfigProperties.getZoom())
+                        .queryParam("maptype", mapConfigProperties.getMapType())
+                        .queryParam("markers", "icon:" + mapConfigProperties.getMarker() + "|" + location.getLatitude() + "," + location.getLongitude())
+                        .build())
+                .accept(MediaType.IMAGE_PNG)
+                .retrieve()
+                .bodyToMono(byte[].class)
+                .block();
+
+        if (image == null) {
+            log.debug("The map download failed");
+            return null;
+        }
+
+        return Base64.getEncoder().encodeToString(image);
     }
 
 }
