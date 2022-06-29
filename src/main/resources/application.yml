@@ -3,7 +3,7 @@ map:
   url: "https://maps.googleapis.com/maps/api/staticmap"
   zoom: 18
   mapType: roadMap
-  marker: "https://map.what3words.com/map/marker.png"
+  marker: ${CUSTOM_MARKER_SOURCE}
   size:
     height: 500
     width: 500

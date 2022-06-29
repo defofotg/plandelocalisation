@@ -35,7 +35,6 @@ public class PlanController {
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=pdf_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
-
         this.planGeneratorService.export(locationDTO, response);
     }
 }
