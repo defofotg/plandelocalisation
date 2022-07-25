@@ -1,10 +1,11 @@
 package cm.pdl.plandelocalisation.plan.controller;
 
+import cm.pdl.plandelocalisation.plan.service.PlangGeneratorInterface;
 import cm.pdl.plandelocalisation.plan.dto.LocationDTO;
-import cm.pdl.plandelocalisation.plan.service.PlanGeneratorService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,11 +24,12 @@ import java.io.IOException;
 @RequestMapping("/api")
 public class PlanController {
 
-    private final PlanGeneratorService planGeneratorService;
+    private final PlangGeneratorInterface planGeneratorService;
 
     @GetMapping("/plan/download")
-    void downloadPlanPDF(@RequestParam @NonNull String latitude, @RequestParam @NonNull String longitude, HttpServletResponse response) throws IOException {
+    ResponseEntity<?> downloadPlanPDF(@RequestParam @NonNull String latitude, @RequestParam @NonNull String longitude, HttpServletResponse response) throws IOException {
         response.setContentType("application/pdf");
-        this.planGeneratorService.export(new LocationDTO(latitude, longitude), response);
+        this.planGeneratorService.generate(new LocationDTO(latitude, longitude), response);
+        return ResponseEntity.ok().build();
     }
 }

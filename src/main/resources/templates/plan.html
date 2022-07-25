@@ -11,52 +11,67 @@
 </head>
 
 <body class="flex items-center justify-center h-screen">
-    <div id="presentation-header" class="bg-gray-100 text-white w-3/5">
-        <div id="titre" class="ml-10">
-            <div class="part1">
-                Plan
-            </div>
-            <div class="part2">
-                de
-            </div>
-            <div class="part3">
-                localisation
+    <div id="entete">
+        <div class="left">
+            <div id="titre" class="text-bold">Plan de Localisation</div>
+            <div>
+                <table>
+                    <tr>
+                        <td class="text-bold">BOUGNE</td>
+                    </tr>
+                    <tr>
+                        <td>Dieudonné</td>
+                    </tr>
+                    <tr>
+                        <td class="fs-level-2">CNI N° 12345678</td>
+                    </tr>
+                    <tr>
+                        <td class="fs-level-2">Tél 61245789</td>
+                    </tr>
+                </table>
             </div>
         </div>
-        <div id="ribbon">
-            <div class="partleft"></div>
-            <div class="partright"></div>
+        <div class="right">
+            <img id="logopdl" src="/images/logopdl.jpeg" alt="#"/>
         </div>
     </div>
-    <div id="details" class="bg-gray-100 p-5 text-center"><span
-            th:text="${place.getAddress().getSuburb()} + ' - ' + ${place.getAddress().getCity()} +' - ' + ${place.getAddress().getCountry()}">
-        </span>
+    <div id="map-details" class="text-bold">
+        <div class="left" th:text="${identifier}"></div>
+        <div class="right">
+                <span th:text="${place.getAddress().getSuburb()} + ' - ' + ${place.getAddress().getCity()} +' - ' + ${place.getAddress().getCountry()}"></span>
+        </div>
     </div>
-    <img class="text-center mt-4 mb-4 ml-8" th:src="*{'data:image/png;base64,'+ mapImage }" alt="#"/>
-    <div id="ribbon-footer">
-        <div class="partleft pl-footer"></div>
-        <div class="partright pr-footer"></div>
+    <div id="map-image">
+        <img class="text-center ml-6" th:src="*{'data:image/png;base64,'+ mapImage }" alt="#"/>
     </div>
-    <div id="details-footer" class="bg-gray-100">
+    <div id="more-details">
         <table>
             <tr>
-                <th>Identifiant du plan</th>
-                <td>Maria Anders</td>
+                <td class="fs-level-2 text-italic" th:text="'édité le '+ ${creationDate}"></td>
+                <td class="text-bold points">Points de référence</td>
             </tr>
             <tr>
-                <th>Nom demandeur</th>
-                <td>Germany</td>
-            </tr>
-            <tr>
-                <th>Prénom demandeur</th>
-                <td>Mexico</td>
-            </tr>
-            <tr>
-                <th>Numéro de téléphone</th>
-                <td>Austria</td>
+                <td></td>
+                <td class="points">
+                    <ul class="fs-level-2">
+                        <li>Point 1 à X mètres</li>
+                        <li>Point 2 à X mètres</li>
+                        <li>Point 3 à X mètres</li>
+                        <li>Point 4 à X mètres</li>
+                    </ul>
+                </td>
             </tr>
         </table>
-        <div id="creation-time" class="bg-purple"><span th:text="${creationDate}"></span></div>
+    </div>
+    <div id="details-footer">
+        <div class="signature">
+            <div>J'atteste l'exactitude de ce plan.</div>
+            <div id="signature" class="mb-4">Signature</div>
+            <div id="validite">Ce plan de localisation est valide jusqu'au <span class="text-bold" th:text="${expirationDate}"></span></div>
+        </div>
+        <div id="qrcode">
+            <img th:src="*{'data:image/png;base64,'+ qrCode }" alt="#"/>
+        </div>
     </div>
 </body>
 
