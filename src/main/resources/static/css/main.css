@@ -664,40 +664,26 @@ video {
     font-family: "Roboto", serif !important;
 }
 
-#titre {
-    color: #1869c1;
-    font-size: 46px;
-    font-weight: bold;
-    margin-left: 30px;
-    text-transform: uppercase;
-}
-
-#titre .part1 {
-    letter-spacing: 3px;
-    position: relative;
-    bottom: -35px;
-}
-
-#titre .part3 {
-    position: relative;
-    top: -35px;
-}
-
-/*border-top: solid 3px #1869c1; */
-#details {
-    color: #1869c1;
-    font-size: 30px;
-    font-weight: bold;
-    text-shadow: 1px 1px gray;
-    text-transform: uppercase;
-}
-
 .ml-10 {
     margin-left: 2.5rem;
 }
 
+.ml-6 {
+    margin-left: 1.5rem;
+}
+
+.my-6 {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
 .ml-8 {
     margin-left: 2rem;
+}
+
+.mx-8 {
+    margin-left: 2rem;
+    margin-right: 2rem;
 }
 
 .mt-4 {
@@ -721,6 +707,11 @@ video {
     padding-left: 2.5rem;
 }
 
+.my-1 {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
 .bg-purple {
     background-color: #99aced;
 }
@@ -729,87 +720,144 @@ video {
     color: white;
 }
 
-
 .d-block {
     display: block;
     margin: 0 auto;
 }
 
-#ribbon {
-    background-color: #38a169;
-    height: 30px;
-    padding: 0;
+.fs-level-2 {
+    font-size: 16px;
 }
 
-.partleft, .partright {
+.text-italic {
+    font-style: italic;
+}
+
+body {
+    font-size: 20px;
+}
+
+#entete {
+    margin-bottom: unset;
+}
+
+#titre {
     display: inline-block;
-    padding: unset;
+    background-color: #c1eaf2;
+    border: 5px solid #1727a9;
+    color: #5cc2f2;
+    font-size: 32px;
+    margin-left: unset;
+    margin-bottom: 20px;
+    padding: 5px;
+    text-transform: capitalize;
+}
+
+#entete .left, #entete .right {
+    display: inline-block;
+    min-height: 50px;
+}
+
+#entete .left {
+    width: 50%;
+}
+
+#entete .right {
+    width: 49.9%;
+}
+
+#logopdl {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 120px;
+    width: 120px;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+#map-details, #more-details {
+    margin-top: unset;
+    padding-right: unset;
+}
+
+#map-details .left, #map-details .right, #more-details .left, #more-details .right {
+    display: inline-block;
     margin: unset;
-    height: 30px;
+    min-height: 10px;
+    padding-top: 20px;
 }
 
-.pl-footer, .pr-footer {
-    height: 10px;
+#map-details .left, #more-details .left {
+    width: 35.99%;
 }
 
-.partleft {
-    background-color: #1869c1;
-    width: 60%;
+#map-details .right, #more-details .right {
+    text-align: right;
+    width: 64%;
 }
 
-.partright {
-    background-color: #99aced;
-    margin-left: -5px;
-    margin-right: 3px;
-    width: 39.9%;
+#map-image {
+    border: 2px solid #1727a9;
+    text-align: center;
+    padding-bottom: 1px;
+    padding-top: 1px;
 }
 
-.pl-footer {
-    background-color: #99aced;
-    width: 60%;
-}
-
-.pr-footer {
-    background-color: #1869c1;
-    width: 39.9%;
-}
-
-#details-footer {
-    height: 140px;
-    position: relative;
-}
-
-#map-block {
-    border: solid 3px #1869c1;
+#more-details {
+    height: 150px;
 }
 
 table {
     display: inline-block;
     border-collapse: collapse;
-    margin-left: 2rem;
-    width: 70%;
-}
-
-td, th {
-    text-align: left;
-    padding: 4px;
-}
-
-th {
-    color: #1869c1;
-    width: 50%;
+    margin-left: 0;
+    width: 100%;
 }
 
 td {
-    font-weight: bold;
+    text-align: left;
+    vertical-align: top;
+    margin: 0;
+    padding: 0;
+    width: 50%;
 }
 
-#creation-time {
-    bottom: 0;
-    font-weight: bold;
-    height: 30px;
-    position: absolute;
-    right: 0;
+td.points {
+    text-align: right;
+    vertical-align: top;
+}
+
+#details-footer {
+    position: relative;
+    width: 100%;
+}
+
+#signature {
+    border: 2px solid black;
+    color: lightgrey;
+    padding: 20px 50px 20px 50px;
+    font-style: italic;
     text-align: center;
-    width: 280px;
+    width: 50%;
+}
+
+#qrcode {
+    position: absolute;
+    bottom: 5px;
+    right: 0;
+    width: 120px;
+}
+
+#qrcode img {
+    height: 120px;
+    width: 120px;
+}
+
+#validite {
+    font-style: italic;
+    font-size: 14px;
+    color: rgba(133, 133, 133, 0.6);
 }
