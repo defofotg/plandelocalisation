@@ -1,10 +1,11 @@
 package cm.pdl.plandelocalisation.plan.service.impl;
 
+import cm.pdl.plandelocalisation.plan.dto.LocationDTO;
+import cm.pdl.plandelocalisation.plan.dto.PlaceDTO;
+import cm.pdl.plandelocalisation.plan.dto.UserDTO;
 import cm.pdl.plandelocalisation.plan.service.LocationInformationService;
 import cm.pdl.plandelocalisation.plan.service.PlangGeneratorInterface;
 import cm.pdl.plandelocalisation.plan.service.StaticMapService;
-import cm.pdl.plandelocalisation.plan.dto.LocationDTO;
-import cm.pdl.plandelocalisation.plan.dto.PlaceDTO;
 import cm.pdl.plandelocalisation.plan.utils.MapUtils;
 import cm.pdl.plandelocalisation.plan.utils.QRCodeGenerator;
 import com.google.zxing.WriterException;
@@ -19,14 +20,6 @@ import org.thymeleaf.context.Context;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 /**
  * @author Georges DEFO
@@ -45,7 +38,7 @@ public class PlanGeneratorService implements PlangGeneratorInterface {
 
     private final LocationInformationService locationInformationService;
 
-    public void generate(LocationDTO location, HttpServletResponse response) throws IOException {
+    public void generate(UserDTO user, LocationDTO location, HttpServletResponse response) throws IOException {
         if (location == null) {
             log.debug("Location object is null. Map url cannot be generated.");
             throw new IllegalArgumentException("Location object is null. Map url cannot be generated.");
@@ -56,6 +49,8 @@ public class PlanGeneratorService implements PlangGeneratorInterface {
         PlaceDTO place = locationInformationService.getInformation(location);
         String mapImage = staticMapService.generateBase64Map(location.getLongitude(), location.getLatitude());
         String planID = MapUtils.pdlUniqueIdentifier(place);
+        String creationDate = MapUtils.pdlZonedCreationDate();
+        String expirationDate = MapUtils.pdlZonedExpirationDate(creationDate);
         String qrCode = null;
 
         try {
@@ -64,15 +59,7 @@ public class PlanGeneratorService implements PlangGeneratorInterface {
             log.error("QRCode creation failed.");
         }
 
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        ZoneId cameroonZoneId = ZoneId.of("Africa/Douala");
-        LocalDateTime localDate = LocalDateTime.now();
-        ZonedDateTime creationDateTime = localDate.atZone(cameroonZoneId);
-        ZonedDateTime expirationDateTime = creationDateTime.plusMonths(1);
-
-        String creationDate = dateFormat.format(creationDateTime);
-        String expirationDate = dateFormat.format(expirationDateTime);
-
+        ctx.setVariable("user", user);
         ctx.setVariable("identifier", planID);
         ctx.setVariable("location", location);
         ctx.setVariable("place", place);

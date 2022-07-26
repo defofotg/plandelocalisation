@@ -17,16 +17,16 @@
             <div>
                 <table>
                     <tr>
-                        <td class="text-bold">BOUGNE</td>
+                        <td class="text-bold" th:text="${user.lastname}"></td>
                     </tr>
                     <tr>
-                        <td>Dieudonné</td>
+                        <td th:text="${user.firstname}"></td>
                     </tr>
                     <tr>
-                        <td class="fs-level-2">CNI N° 12345678</td>
+                        <td class="fs-level-2" th:text="'CNI: ' + ${user.idCardNumber}">CNI N° 12345678</td>
                     </tr>
                     <tr>
-                        <td class="fs-level-2">Tél 61245789</td>
+                        <td class="fs-level-2" th:text="'TEL: ' + ${user.phoneNumber}">Tél 61245789</td>
                     </tr>
                 </table>
             </div>

@@ -790,11 +790,13 @@ body {
     padding-top: 20px;
 }
 
-#map-details .left, #more-details .left {
+#map-details .left {
+    padding-left: 2rem;
     width: 35.99%;
 }
 
-#map-details .right, #more-details .right {
+#map-details .right {
+    padding-right: 2rem;
     text-align: right;
     width: 64%;
 }
@@ -807,7 +809,9 @@ body {
 }
 
 #more-details {
-    height: 150px;
+    height: 125px;
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
 table {
@@ -848,12 +852,12 @@ td.points {
     position: absolute;
     bottom: 5px;
     right: 0;
-    width: 120px;
+    width: 170px;
 }
 
 #qrcode img {
-    height: 120px;
-    width: 120px;
+    height: 170px;
+    width: 170px;
 }
 
 #validite {

@@ -1,14 +1,16 @@
 package cm.pdl.plandelocalisation.plan.controller;
 
-import cm.pdl.plandelocalisation.plan.service.PlangGeneratorInterface;
+import cm.pdl.plandelocalisation.plan.controller.dto.PlanInputVM;
 import cm.pdl.plandelocalisation.plan.dto.LocationDTO;
-import lombok.NonNull;
+import cm.pdl.plandelocalisation.plan.dto.UserDTO;
+import cm.pdl.plandelocalisation.plan.mapper.PlanMapper;
+import cm.pdl.plandelocalisation.plan.service.PlangGeneratorInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -26,10 +28,19 @@ public class PlanController {
 
     private final PlangGeneratorInterface planGeneratorService;
 
-    @GetMapping("/plan/download")
-    ResponseEntity<?> downloadPlanPDF(@RequestParam @NonNull String latitude, @RequestParam @NonNull String longitude, HttpServletResponse response) throws IOException {
+    private final PlanMapper planMapper;
+
+    @PostMapping("/plan/download")
+    ResponseEntity<?> downloadPlanPDF(@RequestBody PlanInputVM planInputVM, HttpServletResponse response) throws IOException {
         response.setContentType("application/pdf");
-        this.planGeneratorService.generate(new LocationDTO(latitude, longitude), response);
+
+        LocationDTO location = planMapper.planVMtoLocationDTO(planInputVM);
+        UserDTO user = planMapper.planVMtoUserDTO(planInputVM);
+
+        if (location == null || user == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        this.planGeneratorService.generate(user, location, response);
         return ResponseEntity.ok().build();
     }
 }
