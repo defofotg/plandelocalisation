@@ -1,4 +1,4 @@
-package cm.pdl.plandelocalisation.plan.service.impl;
+package cm.pdl.plandelocalisation.plan.service.impl.reverseGeocode;
 
 import cm.pdl.plandelocalisation.plan.service.LocationInformationService;
 import cm.pdl.plandelocalisation.plan.dto.LocationDTO;

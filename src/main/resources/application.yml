@@ -8,8 +8,13 @@ map:
     height: 500
     width: 640
 
-  details:
-    url: "https://nominatim.openstreetmap.org"
+reverse:
+  datasource:
+    nominatim:
+      url: "https://nominatim.openstreetmap.org"
+    openCage:
+      key: "c6d1333f86ce4915a60d56c4f7ea0019"
+
 
 springdoc:
   swagger-ui:

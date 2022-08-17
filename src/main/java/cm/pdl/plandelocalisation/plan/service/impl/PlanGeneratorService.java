@@ -36,7 +36,9 @@ public class PlanGeneratorService implements PlangGeneratorInterface {
 
     private final StaticMapService staticMapService;
 
-    private final LocationInformationService locationInformationService;
+    private final LocationInformationService openCageService;
+
+    private final LocationInformationService geoapifyService;
 
     public void generate(UserDTO user, LocationDTO location, HttpServletResponse response) throws IOException {
         if (location == null) {
@@ -46,7 +48,7 @@ public class PlanGeneratorService implements PlangGeneratorInterface {
 
         Context ctx = new Context();
 
-        PlaceDTO place = locationInformationService.getInformation(location);
+        PlaceDTO place = openCageService.getInformation(location);
         String mapImage = staticMapService.generateBase64Map(location.getLongitude(), location.getLatitude());
         String planID = MapUtils.pdlUniqueIdentifier(place);
         String creationDate = MapUtils.pdlZonedCreationDate();
