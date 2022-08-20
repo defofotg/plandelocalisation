@@ -1,5 +1,6 @@
 package cm.pdl.plandelocalisation.config;
 
+import com.byteowls.jopencage.JOpenCageGeocoder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,13 +21,25 @@ import java.util.Collections;
 public class WebClientConfiguration {
 
     private final MapConfigProperties mapConfigProperties;
+    private final DataProviderConfigProperties dataProviderConfigProperties;
 
     @Bean
     public WebClient webClient(){
+        String baseUrl = dataProviderConfigProperties.getNominatim().getUrl();
         return WebClient.builder()
-                .baseUrl(mapConfigProperties.getDetails().getUrl())
+                .baseUrl(baseUrl)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultUriVariables(Collections.singletonMap("url", mapConfigProperties.getDetails().getUrl()))
+                .defaultUriVariables(Collections.singletonMap("url", baseUrl))
+                .build();
+    }
+
+    @Bean
+    public WebClient geoapifyWebClient(){
+        String baseUrl = dataProviderConfigProperties.getGeoapify().getUrl();
+        return WebClient.builder()
+                .baseUrl(baseUrl)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .defaultUriVariables(Collections.singletonMap("url", baseUrl))
                 .build();
     }
 
@@ -46,5 +59,10 @@ public class WebClientConfiguration {
                 registry.addMapping("/api/**").allowedOrigins("https://gmaps-web-app.herokuapp.com/");
             }
         };
+    }
+
+    @Bean
+    public JOpenCageGeocoder jOpenCageGeocoder() {
+        return new JOpenCageGeocoder(dataProviderConfigProperties.getOpenCage().getKey());
     }
 }

@@ -1,6 +1,7 @@
 package cm.pdl.plandelocalisation.config;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -15,47 +16,49 @@ import javax.validation.constraints.NotBlank;
  */
 @Configuration
 @EnableConfigurationProperties
-@ConfigurationProperties(prefix = "map")
-public class MapConfigProperties {
+@ConfigurationProperties(prefix = "reverse.datasource")
+public class DataProviderConfigProperties {
 
     @Getter
     @Setter
-    @NotBlank
-    private String key;
+    @NonNull
+    private OpenCage openCage;
 
     @Getter
     @Setter
-    @URL
-    private String url;
+    @NonNull
+    private Nominatim nominatim;
 
     @Getter
     @Setter
-    @NotBlank
-    private String zoom;
+    @NonNull
+    private Geoapify geoapify;
 
     @Getter
     @Setter
-    @NotBlank
-    private String mapType;
-
-    @Getter
-    @Setter
-    @URL
-    private String marker;
-
-    @Getter
-    @Setter
-    private Size size = new Size();
-
-    @Getter
-    @Setter
-    public static class Size {
+    public static class OpenCage {
 
         @NotBlank
-        private String height;
+        private String key;
+    }
+
+    @Getter
+    @Setter
+    public static class Nominatim {
 
         @NotBlank
-        private String width;
+        private String url;
+    }
+
+    @Getter
+    @Setter
+    public static class Geoapify {
+
+        @NotBlank
+        private String url;
+
+        @NotBlank
+        private String key;
     }
 }
 
