@@ -20,6 +20,7 @@ import org.thymeleaf.context.Context;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 /**
  * @author Georges DEFO
@@ -36,9 +37,7 @@ public class PlanGeneratorService implements PlangGeneratorInterface {
 
     private final StaticMapService staticMapService;
 
-    private final LocationInformationService openCageService;
-
-    private final LocationInformationService geoapifyService;
+    private final LocationInformationService nominatimService;
 
     public void generate(UserDTO user, LocationDTO location, HttpServletResponse response) throws IOException {
         if (location == null) {
@@ -48,10 +47,10 @@ public class PlanGeneratorService implements PlangGeneratorInterface {
 
         Context ctx = new Context();
 
-        PlaceDTO place = openCageService.getInformation(location);
+        PlaceDTO place = nominatimService.getInformation(location);
         String mapImage = staticMapService.generateBase64Map(location.getLongitude(), location.getLatitude());
         String planID = MapUtils.pdlUniqueIdentifier(place);
-        String creationDate = MapUtils.pdlZonedCreationDate();
+        String creationDate = MapUtils.pdlZonedCreationDate(LocalDateTime.now());
         String expirationDate = MapUtils.pdlZonedExpirationDate(creationDate);
         String qrCode = null;
 

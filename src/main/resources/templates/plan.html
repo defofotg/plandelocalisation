@@ -37,9 +37,7 @@
     </div>
     <div id="map-details" class="text-bold">
         <div class="left" th:text="${identifier}"></div>
-        <div class="right">
-                <span th:text="${place.getAddress().getSuburb()} + ' - ' + ${place.getAddress().getCity()} +' - ' + ${place.getAddress().getCountry()}"></span>
-        </div>
+        <div class="right" th:text="${place.getAddress().planDisplayPlaceName()}"></div>
     </div>
     <div id="map-image" class="mx-8">
         <img th:src="*{'data:image/png;base64,'+ mapImage }" alt="#"/>

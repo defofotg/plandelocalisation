@@ -779,26 +779,35 @@ body {
 }
 
 #map-details, #more-details {
-    margin-top: unset;
-    padding-right: unset;
+    font-size: 18px;
 }
 
-#map-details .left, #map-details .right, #more-details .left, #more-details .right {
+#more-details .left, #more-details .right {
     display: inline-block;
     margin: unset;
     min-height: 10px;
     padding-top: 20px;
 }
 
+#map-details {
+    height: 25px;
+}
+
+#map-details .left, #map-details .right {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    vertical-align: top;
+}
+
 #map-details .left {
-    padding-left: 2rem;
-    width: 35.99%;
+    margin-left: 2rem;
 }
 
 #map-details .right {
-    padding-right: 2rem;
+    padding-left: 1rem;
     text-align: right;
-    width: 64%;
+    width: 446px;
 }
 
 #map-image {

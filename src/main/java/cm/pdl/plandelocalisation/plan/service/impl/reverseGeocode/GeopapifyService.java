@@ -5,7 +5,6 @@ import cm.pdl.plandelocalisation.plan.dto.GeoapifyDTO;
 import cm.pdl.plandelocalisation.plan.dto.LocationDTO;
 import cm.pdl.plandelocalisation.plan.dto.PlaceDTO;
 import cm.pdl.plandelocalisation.plan.mapper.PlaceMapper;
-import cm.pdl.plandelocalisation.plan.mapper.PlanMapper;
 import cm.pdl.plandelocalisation.plan.service.LocationInformationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
