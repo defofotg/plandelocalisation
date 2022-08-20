@@ -21,11 +21,6 @@ public class MapConfigProperties {
     @Getter
     @Setter
     @NotBlank
-    private String baseUrl;
-
-    @Getter
-    @Setter
-    @NotBlank
     private String key;
 
     @Getter
