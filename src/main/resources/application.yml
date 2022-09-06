@@ -17,6 +17,22 @@ reverse:
     geoapify:
       url: "https://api.geoapify.com"
 
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driverClassName: org.postgresql.Driver
+  jpa:
+    database: POSTGRESQL
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
 springdoc:
   swagger-ui:
