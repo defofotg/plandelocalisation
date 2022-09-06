@@ -57,6 +57,7 @@ public class WebClientConfiguration {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**").allowedOrigins("https://gmaps-web-app.herokuapp.com/");
+                registry.addMapping("/api/**").allowedOrigins("https://prismatic-malabi-c2a995.netlify.app/");
             }
         };
     }
