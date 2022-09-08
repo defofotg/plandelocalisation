@@ -15,6 +15,8 @@ public interface UsageTokenMapper {
 
     UsageTokenDTO tokenToDTO(UsageToken token);
 
+    UsageToken fromDTO(UsageTokenDTO usageTokenDTO);
+
     List<UsageTokenDTO> tokensToDTO(List<UsageToken> tokens);
 
 }

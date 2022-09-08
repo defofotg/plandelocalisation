@@ -1,6 +1,7 @@
 package cm.pdl.plandelocalisation.usagetoken.service.impl;
 
 import cm.pdl.plandelocalisation.usagetoken.dto.UsageTokenDTO;
+import cm.pdl.plandelocalisation.usagetoken.infra.entity.UsageToken;
 import cm.pdl.plandelocalisation.usagetoken.infra.repository.UsageTokenRepository;
 import cm.pdl.plandelocalisation.usagetoken.mapper.UsageTokenMapper;
 import cm.pdl.plandelocalisation.usagetoken.service.UsageTokenService;
@@ -26,5 +27,19 @@ public class UsageTokenServiceImpl implements UsageTokenService {
     @Override
     public List<UsageTokenDTO> getUsageTokens() {
         return mapper.tokensToDTO(usageTokenRepository.findAll());
+    }
+
+    @Override
+    public UsageTokenDTO findByValue(String tokenValue) {
+        UsageToken token = usageTokenRepository.findUsageTokenByValue(tokenValue);
+        return mapper.tokenToDTO(token);
+    }
+
+    @Override
+    public UsageTokenDTO revokeToken(UsageTokenDTO usageTokenDTO) {
+        UsageToken token = mapper.fromDTO(usageTokenDTO);
+        token.setActivated(false);
+        usageTokenRepository.save(token);
+        return mapper.tokenToDTO(token);
     }
 }

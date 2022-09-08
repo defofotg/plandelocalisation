@@ -11,4 +11,8 @@ import java.util.List;
 public interface UsageTokenService {
 
     List<UsageTokenDTO> getUsageTokens();
+
+    UsageTokenDTO findByValue(String tokenValue);
+
+    UsageTokenDTO revokeToken(UsageTokenDTO usageTokenDTO);
 }
