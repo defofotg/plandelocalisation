@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @date 23/08/2022
  */
 public interface UsageTokenRepository extends JpaRepository<UsageToken, Integer> {
+
+    UsageToken findUsageTokenByValue(String value);
 }
