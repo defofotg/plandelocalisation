@@ -1,0 +1,50 @@
+databaseChangeLog:
+   - changeSet:
+       id: 1
+       author: Georges_DEFO
+       changes:
+       -  createTable:
+              columns:
+                  -  column:
+                         name:  id
+                         type:  int
+                         constraints:
+                             nullable: false
+                             primaryKey: true
+                  -  column:
+                         name:  value
+                         type:  varchar(255)
+                         constraints:
+                             nullable: false
+                  -  column:
+                         name:  activated
+                         type:  boolean
+                         defaultValueBoolean:  true
+              schemaName:  public
+              tableName:  USAGE_TOKEN
+   - changeSet:
+       id: 2
+       author: Georges_DEFO
+       changes:
+           - loadData:
+                 columns:
+                     - column:
+                           index: 1
+                           name: ID
+                           type: NUMERIC
+                     - column:
+                           index: 2
+                           name: VALUE
+                           type: STRING
+                     - column:
+                           index: 3
+                           name: ACTIVATED
+                           type: BOOLEAN
+                 encoding: UTF-8
+                 file: tokens.csv
+                 quotchar: ''''
+                 relativeToChangelogFile: true
+                 schemaName: public
+                 separator: ;
+                 tableName: USAGE_TOKEN
+                 usePreparedStatements: true

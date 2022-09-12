@@ -46,9 +46,11 @@
         <table>
             <tr>
                 <td class="fs-level-2 text-italic" th:text="'édité le '+ ${creationDate}"></td>
+                <td class="points text-bold" th:text="'Latitude: ' + ${place.getLat()}"></td>
             </tr>
             <tr>
                 <td></td>
+                <td class="points text-bold" th:text="'Longitude: ' + ${place.getLon()}"></td>
             </tr>
         </table>
     </div>
