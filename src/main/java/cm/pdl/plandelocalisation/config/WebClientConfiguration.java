@@ -56,8 +56,10 @@ public class WebClientConfiguration {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**").allowedOrigins("https://gmaps-web-app.herokuapp.com/");
-                registry.addMapping("/api/**").allowedOrigins("https://prismatic-malabi-c2a995.netlify.app/");
+               /* registry.addMapping("/api/**").allowedOrigins("https://gmaps-web-app.herokuapp.com");
+                registry.addMapping("/api/**").allowedOrigins("https://prismatic-malabi-c2a995.netlify.app");*/
+
+                registry.addMapping("/**");
             }
         };
     }
