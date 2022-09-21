@@ -20,6 +20,7 @@ public class MapUtils {
     private static final ZoneId CAMEROUN_ZONE_ID = ZoneId.of("Africa/Douala");
 
     public static String pdlUniqueIdentifier(PlaceDTO place) {
+        log.info("Place used to calculate the unique id: {}", place);
         if (place.getAddress() == null || StringUtils.isEmpty(place.getAddress().getISO31662Lvl4())
                 || StringUtils.isEmpty(place.getPlace_id())) {
             log.error("could not generate unique identifier");
