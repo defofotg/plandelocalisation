@@ -1,7 +1,7 @@
 map:
   key: ${GMAPS_STATIC_API_KEY}
   url: "https://maps.googleapis.com"
-  zoom: 18
+  zoom: 17
   mapType: roadMap
   marker: ${CUSTOM_MARKER_SOURCE}
   size:
