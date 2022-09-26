@@ -17,9 +17,11 @@ public class MapUtils {
 
     private static final String PREFIX_PDL = "PDL";
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private static final DateTimeFormatter PDL_ID_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("ddMMyyHHmmss");
+
     private static final ZoneId CAMEROUN_ZONE_ID = ZoneId.of("Africa/Douala");
 
-    public static String pdlUniqueIdentifier(PlaceDTO place) {
+    public static String pdlUniqueIdentifier(PlaceDTO place, LocalDateTime localDate) {
         log.info("Place used to calculate the unique id: {}", place);
         if (place.getAddress() == null || StringUtils.isEmpty(place.getAddress().getISO31662Lvl4())
                 || StringUtils.isEmpty(place.getPlace_id())) {
@@ -27,15 +29,21 @@ public class MapUtils {
             return "";
         }
 
+        long placeId = Long.parseLong(place.getPlace_id());
+        long time = Long.parseLong(pdlZonedCreationDate(localDate, PDL_ID_DATE_TIME_FORMATTER));
+        long identifierBody = placeId + time;
+
+        String suffixPDL = place.getAddress().getISO31662Lvl4().replace("-", "");
+
         return PREFIX_PDL +
-                place.getPlace_id() +
-                place.getAddress().getISO31662Lvl4();
+                identifierBody +
+                suffixPDL;
     }
 
-    public static String pdlZonedCreationDate(LocalDateTime localDate) {
+    public static String pdlZonedCreationDate(LocalDateTime localDate, DateTimeFormatter formatter) {
         if (localDate == null) return "";
         ZonedDateTime creationDateTime = localDate.atZone(CAMEROUN_ZONE_ID);
-        return DATE_TIME_FORMATTER.format(creationDateTime);
+        return formatter == null ? DATE_TIME_FORMATTER.format(creationDateTime) : formatter.format(creationDateTime);
     }
 
     public static String pdlZonedExpirationDate(String creationDateTime) {
