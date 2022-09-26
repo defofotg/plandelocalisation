@@ -49,8 +49,8 @@ public class PlanGeneratorService implements PlangGeneratorInterface {
 
         PlaceDTO place = nominatimService.getInformation(location);
         String mapImage = staticMapService.generateBase64Map(location.getLongitude(), location.getLatitude());
-        String planID = MapUtils.pdlUniqueIdentifier(place);
-        String creationDate = MapUtils.pdlZonedCreationDate(LocalDateTime.now());
+        String planID = MapUtils.pdlUniqueIdentifier(place, LocalDateTime.now());
+        String creationDate = MapUtils.pdlZonedCreationDate(LocalDateTime.now(), null);
         String expirationDate = MapUtils.pdlZonedExpirationDate(creationDate);
         String qrCode = null;
 
