@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>Plan de localisation</title>
+    <link href="/css/main.css" rel="stylesheet"/>
+</head>
+
+<body class="flex items-center justify-center h-screen">
+    <div id="entete">
+        <div class="left">
+            <div id="titre" class="text-bold">Plan de Localisation</div>
+            <div>
+                <table>
+                    <tr>
+                        <td class="text-bold" th:text="${user.lastname}"></td>
+                    </tr>
+                    <tr>
+                        <td th:text="${user.firstname}"></td>
+                    </tr>
+                    <tr>
+                        <td class="fs-level-2" th:text="'CNI: ' + ${user.idCardNumber}">CNI N° 12345678</td>
+                    </tr>
+                    <tr>
+                        <td class="fs-level-2" th:text="'TEL: ' + ${user.phoneNumber}">Tél 61245789</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="right">
+            <img id="logopdl" src="/images/logopdl.jpeg" alt="#"/>
+        </div>
+    </div>
+    <div id="map-details" class="text-bold">
+        <div class="left" th:text="${identifier}"></div>
+        <div class="right" th:text="${place.getAddress().planDisplayPlaceName()}"></div>
+    </div>
+    <div id="map-image" class="mx-8">
+        <img th:src="*{'data:image/png;base64,'+ mapImage }" alt="#"/>
+    </div>
+    <div id="more-details">
+        <table>
+            <tr>
+                <td class="fs-level-2 text-italic" th:text="'édité le '+ ${creationDate}"></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+    <div id="details-footer">
+        <div class="signature">
+            <div>J'atteste l'exactitude de ce plan.</div>
+            <div id="signature" class="mb-4">Signature</div>
+            <div id="validite">Ce plan de localisation est valide jusqu'au <span class="text-bold" th:text="${expirationDate}"></span></div>
+        </div>
+        <div id="qrcode">
+            <img th:src="*{'data:image/png;base64,'+ qrCode }" alt="#"/>
+        </div>
+    </div>
+</body>
+
+</html>

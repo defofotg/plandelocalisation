@@ -1,12 +1,13 @@
 package cm.pdl.plandelocalisation;
 
+import cm.pdl.plandelocalisation.config.DataProviderConfigProperties;
 import cm.pdl.plandelocalisation.config.MapConfigProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties(MapConfigProperties.class)
+@EnableConfigurationProperties({MapConfigProperties.class, DataProviderConfigProperties.class})
 public class PlandelocalisationApplication {
 
 	public static void main(String[] args) {

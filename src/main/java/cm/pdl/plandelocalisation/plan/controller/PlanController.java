@@ -1,19 +1,20 @@
 package cm.pdl.plandelocalisation.plan.controller;
 
+import cm.pdl.plandelocalisation.plan.controller.dto.PlanInputVM;
 import cm.pdl.plandelocalisation.plan.dto.LocationDTO;
-import cm.pdl.plandelocalisation.plan.service.PlanGeneratorService;
-import com.lowagie.text.DocumentException;
+import cm.pdl.plandelocalisation.plan.dto.UserDTO;
+import cm.pdl.plandelocalisation.plan.mapper.PlanMapper;
+import cm.pdl.plandelocalisation.plan.service.PlangGeneratorInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * @author Georges DEFO
@@ -22,20 +23,24 @@ import java.util.Date;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class PlanController {
 
-    private final PlanGeneratorService planGeneratorService;
+    private final PlangGeneratorInterface planGeneratorService;
+
+    private final PlanMapper planMapper;
 
     @PostMapping("/plan/download")
-    void downloadPlanPDF(@RequestBody LocationDTO locationDTO, HttpServletResponse response) throws DocumentException, IOException {
+    ResponseEntity<?> downloadPlanPDF(@RequestBody PlanInputVM planInputVM, HttpServletResponse response) throws IOException {
         response.setContentType("application/pdf");
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
-        String currentDateTime = dateFormatter.format(new Date());
 
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=pdf_" + currentDateTime + ".pdf";
-        response.setHeader(headerKey, headerValue);
+        LocationDTO location = planMapper.planVMtoLocationDTO(planInputVM);
+        UserDTO user = planMapper.planVMtoUserDTO(planInputVM);
 
-        this.planGeneratorService.export(locationDTO, response);
+        if (location == null || user == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        this.planGeneratorService.generate(user, location, response);
+        return ResponseEntity.ok().build();
     }
 }

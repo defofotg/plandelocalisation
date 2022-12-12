@@ -1,5 +1,6 @@
 package cm.pdl.plandelocalisation.plan.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class LocationDTO {
     String longitude;
     String latitude;

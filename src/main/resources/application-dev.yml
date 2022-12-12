@@ -1,12 +1,41 @@
 map:
   key: ${GMAPS_STATIC_API_KEY}
-  url: "https://maps.googleapis.com/maps/api/staticmap"
+  url: "https://maps.googleapis.com"
   zoom: 18
   mapType: roadMap
-  marker: "https://map.what3words.com/map/marker.png"
+  marker: ${CUSTOM_MARKER_SOURCE}
   size:
-    height: 500
-    width: 500
+    height: 420
+    width: 640
 
-  details:
-    url: "https://nominatim.openstreetmap.org"
+reverse:
+  datasource:
+    nominatim:
+      url: "https://nominatim.openstreetmap.org"
+
+    openCage:
+      key: "c6d1333f86ce4915a60d56c4f7ea0019"
+
+    geoapify:
+      url: "https://api.geoapify.com"
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+
+  h2:
+    console.enabled: true
+
+
+springdoc:
+  swagger-ui:
+    path: /
+
+logging:
+  level:
+    root: INFO
