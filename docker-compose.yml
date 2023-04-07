@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  postgres:
+    build:
+      context: .
+      dockerfile: postgres.dockerfile
+    image: "postgres-pdl"
+    container_name: "postgres-pdl"
+    environment:
+      POSTGRES_DB: plandelocalisation
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      PGDATA: /data/postgres-pdl
+    volumes:
+      - db-pdl:/data/postgres-pdl
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+volumes:
+  db-pdl:
+    external: true
