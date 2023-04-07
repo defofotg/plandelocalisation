@@ -1,25 +1,16 @@
+server:
+  port: 5000
+
 spring:
+  profiles:
+    active: @spring.profiles.active@
   datasource:
-    url: jdbc:postgresql://localhost:5432/plandelocalisation
-    username: postgres
-    password: mysecretpassword
+    url: ${PGDATABASE}
+    username: ${PGUSER}
+    password: ${PGPASSWORD}
     driverClassName: org.postgresql.Driver
   jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-  liquibase:
-    change-log: classpath:db/changelog/changelog.yml
-  config:
-    use-legacy-processing: true
-
-logging:
-  level:
-    org.springframework: info
-    org.hibernate: info
-
-server:
-  port: 8000
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
 
 map:
   key: ${GMAPS_STATIC_API_KEY}
@@ -28,18 +19,24 @@ map:
   mapType: roadMap
   marker: ${CUSTOM_MARKER_SOURCE}
   size:
-    height: 500
+    height: 420
     width: 640
 
 reverse:
   datasource:
     nominatim:
       url: "https://nominatim.openstreetmap.org"
+
     openCage:
       key: "c6d1333f86ce4915a60d56c4f7ea0019"
+
     geoapify:
       url: "https://api.geoapify.com"
 
 springdoc:
   swagger-ui:
     path: /
+
+logging:
+  level:
+    root: INFO
