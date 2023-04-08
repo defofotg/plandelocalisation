@@ -51,16 +51,14 @@ jobs:
       - name: Stop the Spring Boot app 🚦
         run: pkill -f 'spring-boot:run'
 
-#      - name: Publish test results 📊
-#        uses: EnricoMi/publish-unit-test-result-action@v1
-#        with:
-#          files: target/surefire-reports/TEST-*.xml
-#          check_name: unit tests
-#
-#      - name: Publish code coverage report
-#        uses: codecov/codecov-action@v2.1.0
-#        with:
-#          token: ${{ secrets.CODECOV_TOKEN }}
-#          fail_ci_if_error: true
-#          name: codecov-report
-#          flags: unittests
+      - name: Publish test results 📊
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        with:
+          files: target/surefire-reports/TEST-*.xml
+          check_name: unit tests
+
+      - name: Publish code coverage report
+        uses: codecov/codecov-action@v3
+        with:
+          name: codecov-report
+          flags: unittests
