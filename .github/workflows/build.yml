@@ -37,16 +37,16 @@ jobs:
           cache: maven
 
       - name: Build with Maven 🏗️
-        run: mvn -B package --file pom.xml
+        run: ./mvnw -B --no-transfer-progress clean package --file pom.xml
 
       - name: Run tests 🧪
-        run: mvn -B test --file pom.xml
+        run: ./mvnw -B test --file pom.xml
 
       - name: Start the Spring Boot app 🚀
-        run: mvn spring-boot:run & sleep 30
+        run: ./mvnw spring-boot:run & sleep 30
 
       - name: Check if app is running 🚑
-        run: curl --retry 10 --retry-connrefused http://localhost:8080/actuator/health
+        run: curl --retry 10 --retry-connrefused http://localhost:8000/actuator/health
 
       - name: Stop the Spring Boot app 🚦
         run: pkill -f 'spring-boot:run'
