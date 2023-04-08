@@ -27,20 +27,29 @@ jobs:
 
     steps:
       - name: Checkout code 🏁
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Java
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
 
       - name: Build with Maven 🏗️
-        run: ./mvnw -B --no-transfer-progress clean package --file pom.xml
+        run: ./mvnw -B --no-transfer-progress clean package -DskipTests=true --file pom.xml
 
       - name: Run tests 🧪
-        run: ./mvnw -B test --file pom.xml
+        run: ./mvnw -B -Dmaven.test.failure.ignore=true test --file pom.xml
+
+      - name: Publish test results 📊
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Maven Tests
+          path: target/surefire-reports/*.xml
+          reporter: java-junit
+          fail-on-error: true
 
       - name: Start the Spring Boot app 🚀
         run: ./mvnw spring-boot:run & sleep 30
@@ -51,12 +60,5 @@ jobs:
       - name: Stop the Spring Boot app 🚦
         run: pkill -f 'spring-boot:run'
 
-      - name: Publish test results 📊
-        uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          name: Maven Tests
-          path: target/surefire-reports/*.xml
-          reporter: java-junit
-          fail-on-error: true
+
 
