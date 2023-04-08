@@ -52,13 +52,11 @@ jobs:
         run: pkill -f 'spring-boot:run'
 
       - name: Publish test results 📊
-        uses: EnricoMi/publish-unit-test-result-action@v1
+        uses: dorny/test-reporter@v1
+        if: always()
         with:
-          files: target/surefire-reports/TEST-*.xml
-          check_name: unit tests
+          name: Maven Tests
+          path: target/surefire-reports/*.xml
+          reporter: java-junit
+          fail-on-error: true
 
-      - name: Publish code coverage report
-        uses: codecov/codecov-action@v3
-        with:
-          name: codecov-report
-          flags: unittests
