@@ -2,8 +2,8 @@ version: '3.8'
 services:
   postgres:
     build:
-      context: .
-      dockerfile: postgres.dockerfile
+      context: ../..
+      dockerfile: ../../postgres.dockerfile
     image: "postgres-pdl"
     container_name: "postgres-pdl"
     environment:
