@@ -791,23 +791,8 @@ body {
 
 #map-details {
     height: 25px;
-}
-
-#map-details .left, #map-details .right {
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
-    vertical-align: top;
-}
-
-#map-details .left {
-    margin-left: 2rem;
-}
-
-#map-details .right {
-    padding-left: 1rem;
-    text-align: right;
-    width: 446px;
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
 #map-image {
@@ -835,12 +820,24 @@ td {
     vertical-align: top;
     margin: 0;
     padding: 0;
+}
+
+.more-details td {
     width: 50%;
+}
+
+td.place {
+    width: 430px;
 }
 
 td.points {
     text-align: right;
     vertical-align: top;
+}
+
+td.points.overflow {
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 #details-footer {

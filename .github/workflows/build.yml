@@ -1,0 +1,95 @@
+name: CI Pipeline
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      IMG_NAME: ${{ github.repository }}
+
+    services:
+      postgres:
+        image: postgres
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: mysecretpassword
+          POSTGRES_DB: plandelocalisation
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - name: Checkout code 🏁
+        uses: actions/checkout@v3
+
+      - name: Debug
+        run: |
+          echo "github.ref -> {{ github.ref }}"
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build with Maven 🏗️
+        run: ./mvnw -B --no-transfer-progress clean package -DskipTests=true --file pom.xml
+
+      - name: Run tests 🧪
+        run: ./mvnw -B -Dmaven.test.failure.ignore=true test --file pom.xml
+
+      - name: Publish test results 📊
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Maven Tests
+          path: target/surefire-reports/*.xml
+          reporter: java-junit
+          fail-on-error: true
+
+      - name: Start the Spring Boot app 🚀
+        run: ./mvnw spring-boot:run & sleep 10
+
+      - name: Check if app is running 🚑
+        run: curl --retry 10 --retry-connrefused http://localhost:8000/actuator/health
+
+      - name: Stop the Spring Boot app 🚦
+        run: pkill -f 'spring-boot:run'
+
+      - name: Docker metadata ⌗🐳
+        id: metadata
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.IMG_NAME }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value={{sha}},enable=${{ github.ref_type != 'tag' }}
+
+      - name: Log in to Docker Hub 🧑🏿‍💻🐳
+        uses: docker/login-action@v2
+        if: ${{ github.ref_type == 'tag' }}
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker image 🏗️🐳🔝
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: ${{ github.event.base_ref =='refs/heads/main' && github.ref_type == 'tag' && !startsWith(github.ref, 'refs/tags/v0.')}}
+          tags: ${{ steps.metadata.outputs.tags }}
+          labels: ${{ steps.metadata.outputs.labels }}
+
+
+

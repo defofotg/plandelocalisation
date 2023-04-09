@@ -16,14 +16,21 @@ import javax.validation.constraints.NotEmpty;
 public class PlanInputVM {
     @NotEmpty
     String longitude;
+
     @NotEmpty
     String latitude;
 
     String firstname;
+
     @NotEmpty
     String lastname;
+
     @NotEmpty
     String phoneNumber;
+
     @NotEmpty
     String idCardNumber;
+
+    @NotEmpty
+    String token;
 }

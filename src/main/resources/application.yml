@@ -1,7 +1,30 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/plandelocalisation
+    username: postgres
+    password: mysecretpassword
+    driverClassName: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  liquibase:
+    change-log: classpath:db/changelog/changelog.yml
+  config:
+    use-legacy-processing: true
+
+logging:
+  level:
+    org.springframework: info
+    org.hibernate: info
+
+server:
+  port: 8000
+
 map:
   key: ${GMAPS_STATIC_API_KEY}
   url: "https://maps.googleapis.com"
-  zoom: 18
+  zoom: 17
   mapType: roadMap
   marker: ${CUSTOM_MARKER_SOURCE}
   size:
@@ -16,7 +39,6 @@ reverse:
       key: "c6d1333f86ce4915a60d56c4f7ea0019"
     geoapify:
       url: "https://api.geoapify.com"
-
 
 springdoc:
   swagger-ui:

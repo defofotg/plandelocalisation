@@ -1,3 +1,17 @@
+server:
+  port: 5000
+
+spring:
+  profiles:
+    active: @spring.profiles.active@
+  datasource:
+    url: ${PGDATABASE}
+    username: ${PGUSER}
+    password: ${PGPASSWORD}
+    driverClassName: org.postgresql.Driver
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+
 map:
   key: ${GMAPS_STATIC_API_KEY}
   url: "https://maps.googleapis.com"
@@ -18,19 +32,6 @@ reverse:
 
     geoapify:
       url: "https://api.geoapify.com"
-
-spring:
-  datasource:
-    url: jdbc:h2:mem:mydb
-    username: sa
-    password: password
-    driverClassName: org.h2.Driver
-  jpa:
-    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
-
-  h2:
-    console.enabled: true
-
 
 springdoc:
   swagger-ui:
