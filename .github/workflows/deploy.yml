@@ -1,11 +1,8 @@
-name: CI Pipeline
+name: CD to VPS Pipeline
 on:
   push:
-    branches:
-      - '*'
-  pull_request:
-    branches:
-      - '*'
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
   workflow_dispatch:
 
 jobs:
@@ -70,23 +67,47 @@ jobs:
         with:
           images: ${{ env.IMG_NAME }}
           tags: |
-            type=raw,value={{sha}},enable=${{ github.ref_type != 'tag' }}
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
 
       - name: Log in to Docker Hub 🧑🏿‍💻🐳
         uses: docker/login-action@v2
-        if: ${{ github.event.base_ref =='refs/heads/main' }}
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push Docker image 🏗️🐳🔝
         uses: docker/build-push-action@v4
-        if: ${{ github.event.base_ref =='refs/heads/main' }}
         with:
           context: .
           push: ${{ github.event.base_ref =='refs/heads/main' && github.ref_type == 'tag' && !startsWith(github.ref, 'refs/tags/v0.')}}
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to VPS via ssh 🧑🏿‍💻
+        uses: appleboy/ssh-action@0.1.9
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd /opt/pdl-rest-api
+            docker-compose pull
+            docker-compose up -d
 
+      - name: Remove unused Docker images and volumes 🗑️
+        uses: appleboy/ssh-action@0.1.9
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            docker image prune -a -f
+            docker volume prune -f
 
