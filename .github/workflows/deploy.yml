@@ -89,7 +89,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to VPS via ssh 🧑🏿‍💻
-        uses: appleboy/ssh-action@0.1.9
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
@@ -101,7 +101,7 @@ jobs:
             docker-compose up -d
 
       - name: Remove unused Docker images and volumes 🗑️
-        uses: appleboy/ssh-action@0.1.9
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
