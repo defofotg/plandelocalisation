@@ -58,25 +58,6 @@ class MapUtilsTest {
     }
 
     @Test
-    @DisplayName("Generate unique PDL identifier with missing ISO code")
-    void pdlUniqueIdentifierFailsNoISONumber() {
-        //GIVEN
-        AddressDTO address = new AddressDTO();
-        address.setSuburb("Bonamoussadi");
-        address.setCity("Douala V");
-        address.setCountry("Cameroun");
-        PlaceDTO place = new PlaceDTO();
-        place.setPlace_id("123456789");
-        place.setAddress(address);
-
-        //WHEN
-        String identifier = MapUtils.pdlUniqueIdentifier(place, null);
-
-        //THEN
-        assertThat(StringUtils.isEmpty(identifier)).isTrue();
-    }
-
-    @Test
     @DisplayName("Generate unique PDL identifier with missing place ID")
     void pdlUniqueIdentifierFailsNoPlaceID() {
         //GIVEN

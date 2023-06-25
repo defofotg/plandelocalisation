@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/plandelocalisation
     username: postgres
-    password: mysecretpassword
+    password: password
     driverClassName: org.postgresql.Driver
   jpa:
     hibernate:

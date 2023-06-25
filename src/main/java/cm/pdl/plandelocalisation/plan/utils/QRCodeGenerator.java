@@ -22,7 +22,7 @@ public class QRCodeGenerator {
         BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
 
         ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
-        MatrixToImageConfig con = new MatrixToImageConfig(0xFF1727A9, 0xFFFFFFFF);
+        MatrixToImageConfig con = new MatrixToImageConfig(0xFFFFFFFF, 0x008912744);
 
         MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream, con);
         byte[] pngData = pngOutputStream.toByteArray();

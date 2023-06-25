@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Optional;
 
 /**
  * @author Georges DEFO
@@ -23,8 +24,7 @@ public class MapUtils {
 
     public static String pdlUniqueIdentifier(PlaceDTO place, LocalDateTime localDate) {
         log.info("Place used to calculate the unique id: {}", place);
-        if (place.getAddress() == null || StringUtils.isEmpty(place.getAddress().getISO31662Lvl4())
-                || StringUtils.isEmpty(place.getPlace_id())) {
+        if (place.getAddress() == null || StringUtils.isEmpty(place.getPlace_id())) {
             log.error("could not generate unique identifier");
             return "";
         }
@@ -33,7 +33,9 @@ public class MapUtils {
         long time = Long.parseLong(pdlZonedCreationDate(localDate, PDL_ID_DATE_TIME_FORMATTER));
         long identifierBody = placeId + time;
 
-        String suffixPDL = place.getAddress().getISO31662Lvl4().replace("-", "");
+        String suffixPDL = Optional.ofNullable(place.getAddress().getISO31662Lvl4())
+                .map(iso -> iso.replace("-", ""))
+                .orElse("");
 
         return PREFIX_PDL +
                 identifierBody +
