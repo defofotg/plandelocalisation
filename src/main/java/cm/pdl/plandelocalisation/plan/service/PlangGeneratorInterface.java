@@ -2,6 +2,7 @@ package cm.pdl.plandelocalisation.plan.service;
 
 import cm.pdl.plandelocalisation.plan.dto.LocationDTO;
 import cm.pdl.plandelocalisation.plan.dto.UserDTO;
+import com.lowagie.text.DocumentException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -12,6 +13,6 @@ import java.io.IOException;
  */
 public interface PlangGeneratorInterface {
 
-    void generate(UserDTO userDTO, LocationDTO location, HttpServletResponse response) throws IOException;
+    void generate(UserDTO userDTO, LocationDTO location, HttpServletResponse response) throws IOException, DocumentException;
 
 }

@@ -1,0 +1,158 @@
+@font-face {
+    font-family: "Roboto";
+    font-weight: normal;
+    src: url("/static/fonts/Inter-Regular.ttf") format('truetype');
+}
+
+html {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+}
+
+.page {
+    height: 842px;
+    width: 100%;
+    padding: 1.25rem;
+}
+
+/* Header */
+.page-head {
+    background-color: #8985cb;
+    color: whitesmoke;
+    display: table;
+    min-height: 12.5rem;
+    margin-bottom: 10px;
+    padding: 0.25rem 0;
+    width: 100%;
+}
+
+.page-head-user {
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 5px;
+}
+
+.page-head-user .identifier {
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.page-head-user-name,
+.page-head-user-info {
+    height: 5rem;
+}
+
+.page-head-user-name {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.page-head-user-name .firstname, .page-head-user-name .lastname {
+    font-size: 40px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.page-head-user-name .firstname {
+    text-transform: capitalize;
+}
+
+.page-head-user-name .name {
+    font-size: 40px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.page-head-user-info {
+    padding-top: 10px;
+}
+
+.page-head-user-info .info {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.page-head-user-info .info img {
+    height: 15px;
+    width: 15px;
+    margin-right: 10px;
+}
+
+.page-head-code {
+    display: table-cell;
+    vertical-align: center;
+    text-align: right;
+    padding-right: 5px;
+    height: 100%;
+}
+
+.page-head-code img {
+    height: 7.5rem;
+    width: 7.5rem;
+}
+
+.page-map {
+    margin: 30px auto;
+    height: 500px;
+    width: 640px;
+    background-color: gainsboro;
+}
+
+.footer-container {
+    background-color: #8985cb;
+    color: whitesmoke;
+    padding: 10px;
+}
+
+.page-footer {
+    display: table;
+    height: 120px;
+    width: 100%;
+}
+
+.page-footer-signature,
+.page-footer-logo {
+    display: table-cell;
+    vertical-align: bottom;
+}
+
+.page-footer-signature .signature {
+    width: 230px;
+    height: 70px;
+    background-color: aliceblue;
+    margin: 10px 0;
+}
+
+.page-footer-logo {
+    text-align: right;
+}
+
+.page-footer-logo img {
+    height: 100px;
+    width: 100px;
+}
+
+.page-footer-labels {
+    background-color: #8985cb;
+    color: whitesmoke;
+    display: table;
+    height: 20px;
+    width: 100%;
+}
+
+.page-footer-label-signature,
+.page-footer-label-validity {
+    display: table-cell;
+    vertical-align: top;
+}
+
+.page-footer-label-signature {
+    text-align: left;
+    margin-left: 20px;
+}
+
+.page-footer-label-validity {
+    text-align: right;
+}

@@ -7,6 +7,7 @@ import cm.pdl.plandelocalisation.plan.mapper.PlanMapper;
 import cm.pdl.plandelocalisation.plan.service.PlangGeneratorInterface;
 import cm.pdl.plandelocalisation.usagetoken.dto.UsageTokenDTO;
 import cm.pdl.plandelocalisation.usagetoken.service.UsageTokenService;
+import com.lowagie.text.DocumentException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,7 @@ public class PlanController {
     private final PlanMapper planMapper;
 
     @PostMapping("/plan/download")
-    ResponseEntity<?> downloadPlanPDF(@RequestBody PlanInputVM planInputVM, HttpServletResponse response) throws IOException {
+    ResponseEntity<?> downloadPlanPDF(@RequestBody PlanInputVM planInputVM, HttpServletResponse response) throws IOException, DocumentException {
 
         UsageTokenDTO usageTokenDTO = tokenService.findByValue(planInputVM.getToken());
         if (usageTokenDTO == null || !usageTokenDTO.isActivated()) {

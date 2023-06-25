@@ -2,74 +2,55 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
-          name="viewport">
-    <meta content="ie=edge" http-equiv="X-UA-Compatible">
     <title>Plan de localisation</title>
-    <link href="/css/main.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" th:href="@{classpath:static/css/style.css}" />
 </head>
 
 <body class="flex items-center justify-center h-screen">
-    <div id="entete">
-        <div class="left">
-            <div id="titre" class="text-bold">Plan de Localisation</div>
-            <div>
-                <table>
-                    <tr>
-                        <td class="text-bold" th:text="${user.lastname}"></td>
-                    </tr>
-                    <tr>
-                        <td th:text="${user.firstname}"></td>
-                    </tr>
-                    <tr>
-                        <td class="fs-level-2" th:text="'CNI: ' + ${user.idCardNumber}">CNI N° 12345678</td>
-                    </tr>
-                    <tr>
-                        <td class="fs-level-2" th:text="'TEL: ' + ${user.phoneNumber}">Tél 61245789</td>
-                    </tr>
-                </table>
+    <div class="page">
+        <div class="page-head">
+            <div class="page-head-user">
+                <div class="page-head-user-name">
+                    <span class="firstname" th:text="${user.firstname}">Prénom</span>
+                    <span class="lastname" th:text="${user.lastname}">Nom</span>
+                </div>
+                <div class="page-head-user-info">
+                    <div class="info">
+                        <img th:src="@{classpath:static/images/person.png}" /><span th:text="'CNI ' + ${user.idCardNumber}"></span>
+                    </div>
+                    <div class="info">
+                        <img th:src="@{classpath:static/images/person.png}" /><span th:text="${user.phoneNumber}"></span>
+                    </div>
+                    <div class="info">
+                        <img th:src="@{classpath:static/images/location.png}" /><span th:text="${place.getAddress().planDisplayPlaceName()}"
+                    >Montplaisir - Lyon - France</span
+                    >
+                    </div>
+                </div>
+                <span class="identifier" th:text="${identifier}"></span>
+            </div>
+            <div class="page-head-code">
+                <img th:src="*{'data:image/png;base64,'+ qrCode }" alt="#"/>
             </div>
         </div>
-        <div class="right">
-            <img id="logopdl" src="/images/logopdl.jpeg" alt="#"/>
+        <div class="page-map">
+            <img th:src="*{'data:image/png;base64,'+ mapImage }" alt="#"/>
         </div>
-    </div>
-    <div id="map-details" class="text-bold">
-        <table>
-            <tr>
-                <td class="plan-id" th:text="${identifier}"></td>
-                <td class="points text-bold place" th:text="${place.getAddress().planDisplayPlaceName()}"></td>
-            </tr>
-        </table>
-        <!--
-        <div class="left" th:text="${identifier}"></div>
-        <div class="right" th:text="${place.getAddress().planDisplayPlaceName()}"></div>
-        -->
-    </div>
-    <div id="map-image" class="mx-8">
-        <img th:src="*{'data:image/png;base64,'+ mapImage }" alt="#"/>
-    </div>
-    <div id="more-details">
-        <table>
-            <tr>
-                <td class="fs-level-2 text-italic" th:text="'édité le '+ ${creationDate}"></td>
-                <td class="points text-bold" th:text="'Lat: ' + ${place.getLat()}"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td class="points text-bold" th:text="'Lon: ' + ${place.getLon()}"></td>
-            </tr>
-        </table>
-    </div>
-    <div id="details-footer">
-        <div class="signature">
-            <div>J'atteste l'exactitude de ce plan.</div>
-            <div id="signature" class="mb-4">Signature</div>
-            <div id="validite">Ce plan de localisation est valide jusqu'au <span class="text-bold" th:text="${expirationDate}"></span></div>
-        </div>
-        <div id="qrcode">
-            <img th:src="*{'data:image/png;base64,'+ qrCode }" alt="#"/>
+        <div class="footer-container">
+            <div class="page-footer">
+                <div class="page-footer-signature">
+              <span th:utext="'J’atteste l’exactitude de ce plan édité le <b>'+ ${creationDate} + '</b>'"
+              ></span>
+                    <div class="signature"></div>
+                </div>
+                <div class="page-footer-logo">
+                    <img src="/images/logopdl.jpeg" />
+                </div>
+            </div>
+            <div class="page-footer-labels">
+                <div class="page-footer-label-signature">Signature</div>
+                <div class="page-footer-label-validity" th:utext="'Valide jusqu\'au <b>'+ ${expirationDate} + '</b>'"></div>
+            </div>
         </div>
     </div>
 </body>
